@@ -1,0 +1,28 @@
+
+h1 {
+    text-align:center;
+    text-decoration:underline;
+    text-decoration-thickness:2px;
+}
+
+p {
+    font-family:sans-serif;
+    font-size:18px;
+    line-height: 26pt;
+}
+
+.form-group {
+    align-content:center;
+    text-align:center;
+}
+
+form {
+    width:50%;
+}
+
+button {	
+    background: none;
+	color: inherit;
+	border: none;
+}
+

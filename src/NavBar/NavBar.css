@@ -1,0 +1,31 @@
+.navbar {
+    background-color: #0d1336;
+    height:75px;  
+}
+
+
+#logo{
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+    padding-left:2%
+}
+
+
+
+.nav-links {
+    color:white;
+    text-decoration:none;
+    padding:0.5rem 1rem;
+    font-size:20px;
+}
+
+.nav-links:hover {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+    border-radius: 40px;
+    color:white;
+}
+
+.fa-bars {
+    color:#fff;
+}
