@@ -12,11 +12,12 @@ var minReflux = 0;
 export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
     resetValues()
     resetData()
+    
     var minPoint= calculateMinPoint(q,alpha,z)
     var minInt = stripLine(0,yD,minPoint[0],minPoint[1])
     minReflux = calculateMinimumRefluxRatio(minInt,yD)
     if (minReflux === "Error" || refluxRatio < minReflux) {
-      return ["N/A","N/A","N/A"]
+      return ["N/A","N/A","Given reflux ratio < Minimum reflux ratio required"]
     }
     else {
       var intersectionPoint = calcIntersectionPoint(z,yD,q,refluxRatio);
@@ -54,7 +55,7 @@ export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
       addDataArray(distlCompData);
       addDataArray(minLineData)
       
-      return [numStages.toFixed(2),feedStage.toFixed(2),minReflux.toFixed(2)]
+      return [numStages.toFixed(0),feedStage.toFixed(0),minReflux.toFixed(2)]
 
     }
    
@@ -105,7 +106,7 @@ function stepOff(xB,yD,xI,yI,refluxRatio,alpha) {
   while (xStep>xI){
     var xRectStop = x_eq(alpha,yStep);
     var xRectLine = createLines(xStep,xRectStop,yStep,yStep);
-    var xRectData = jsonDataFormat(xRectLine[0],xRectLine[1],"","rgb(0,0,0");
+    var xRectData = jsonDataFormat(xRectLine[0],xRectLine[1],"staircasehide","rgb(0,0,0");
     addDataArray(xRectData);
     if (xRectStop<xI) {
       xStripStep = xRectStop;
@@ -115,7 +116,7 @@ function stepOff(xB,yD,xI,yI,refluxRatio,alpha) {
     
     var yRectStop = recLine(xRectStop,yD,refluxRatio);
     var yRectLine = createLines(xRectStop,xRectStop,yStep,yRectStop);
-    var yRectData = jsonDataFormat(yRectLine[0],yRectLine[1],"","rgb(0,0,0");
+    var yRectData = jsonDataFormat(yRectLine[0],yRectLine[1],"staircasehide","rgb(0,0,0");
     addDataArray(yRectData);
     xStep = xRectStop;
     yStep = yRectStop;
@@ -129,12 +130,12 @@ function stepOff(xB,yD,xI,yI,refluxRatio,alpha) {
   while (xStripStep>xB) {
     var yStripStop = stripLine(xStripStep,xB,xI,yI);
     var yStripLine = createLines(xStripStep,xStripStep,yStep,yStripStop);
-    var yStripData = jsonDataFormat(yStripLine[0],yStripLine[1],"","rgb(0,0,0");
+    var yStripData = jsonDataFormat(yStripLine[0],yStripLine[1],"staircasehide","rgb(0,0,0");
     addDataArray(yStripData);
 
     var xStripStop = x_eq(alpha,yStripStop);
     var xStripLine = createLines(xStripStep,xStripStop,yStripStop,yStripStop);
-    var xStripData = jsonDataFormat(xStripLine[0],xStripLine[1],"","rgb(0,0,0)")
+    var xStripData = jsonDataFormat(xStripLine[0],xStripLine[1],"staircasehide","rgb(0,0,0)")
     addDataArray(xStripData);
 
     xStripStep = xStripStop;

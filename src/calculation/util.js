@@ -27,6 +27,36 @@ export function jsonDataFormat(x,y,name,color) {
             showlegend:false
         };
     }
+    else if (name ==="staircase") {
+      data =  {
+        x:x,
+        y:y,
+        mode:"lines",
+        type:"scatter",
+
+        line: {
+          color:color
+
+        },
+        name:name,
+        legendgroup:"staircase",
+      }
+    }
+    else if (name ==="staircasehide") {
+      data =  {
+        x:x,
+        y:y,
+        mode:"lines",
+        type:"scatter",
+
+        line: {
+          color:color
+
+        },
+        legendgroup:"staircase",
+        showlegend:false
+      }
+    }
     else {
         data =  {
             x:x,

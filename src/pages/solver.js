@@ -25,7 +25,6 @@ class Solver extends Component {
           minReflux:0,
         };
 
-        this.validateNumber = this.validateNumber.bind(this);
         this.validateDecimal = this.validateDecimal.bind(this);
         this.validateRatio = this.validateRatio.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,7 +56,7 @@ class Solver extends Component {
 
       refluxToolTip = (props) => (
         <Tooltip {...props}>
-        Enter the reflux ratio, ratio of liquid that reenters the column divided by the liquid removed as a distilled product. Enter a value greater than 0 (e.g. 1.5)
+        Enter the reflux ratio, the ratio of liquid that re-enters the column divided by the liquid removed as a distilled product. Enter a value greater than 0 (e.g. 1.5)
         </Tooltip>
       );
 
@@ -67,12 +66,6 @@ class Solver extends Component {
         </Tooltip>
       );
     
-      validateNumber(event) {
-        let {value,name} = event.target;
-        this.setState({
-          [name]: parseFloat(value, 10) || 0
-        });
-      }
 
       validateDecimal(event) {
         
@@ -99,9 +92,9 @@ class Solver extends Component {
       }
 
       getData() {
-          let stage = calculationSequence(this.state.z,this.state.yD,this.state.xB,this.state.q,this.state.reflux,this.state.alpha)
+          let stage = calculationSequence(parseFloat(this.state.z),parseFloat(this.state.yD),parseFloat(this.state.xB),parseFloat(this.state.q),parseFloat(this.state.reflux),parseFloat(this.state.alpha))
           let data = renderChart(getDataArray())
-
+        
           this.setState ({
               data: data[0],
               layout:data[1],
@@ -113,9 +106,9 @@ class Solver extends Component {
 
     render() {
         return (
-            <><div class="header">
+            <><div className="header">
                 <h1>McCabe-Thiele Diagram</h1>
-                <p1 class="description">Calculates total number of stages, feed stage, and minimum reflux for a distillation column to separate a binary mixture with a given Relative Volatility.</p1>
+                <p className="description">Calculates total number of stages, feed stage, and minimum reflux for a distillation column to separate a binary mixture with a given Relative Volatility.</p>
             </div>
             <div className="row">
                     <div className="col-5">
@@ -177,7 +170,7 @@ class Solver extends Component {
                                         type="text"
                                         name="xB"
                                         value={this.state.xB}
-                                        pattern="?[0-9]*[.]?[0-9]+"
+                                        pattern="[0-9]*[.]?[0-9]+"
                                         onChange={this.validateDecimal} />
                                 </div>
                             </div>
@@ -246,25 +239,19 @@ class Solver extends Component {
                             </div>
                         </form>
                     </div>
-                    <div className="col">
-                        <div className="row">
-                            <div className="col-sm-3">
-                            <br />
-                        <label class="answerLabel"> Number of Stages: {this.state.stages} </label>
+                    <div className="col">   
+                        <br/>
+                        <label className="answerLabel"> Number of Stages: {this.state.stages} </label>
                         <br />
-                        <label class="answerLabel"> Optimal Feed Stage: {this.state.feedStage} </label>
+                        <label className="answerLabel"> Optimal Feed Stage: {this.state.feedStage} </label>
                         <br />
-                        <label class="answerLabel"> Minimum Reflux Ratio: {this.state.minReflux} </label>
+                        <label className="answerLabel"> Minimum Reflux Ratio: {this.state.minReflux} </label>
                         <br />
-                            </div>
-                            <div className="col-6">
-                                <Plot
-                                data={this.state.data}
-                                layout={this.state.layout}
-                                onInitialized={() => { this.getData(); } } />
-                            </div>
-                        </div>
-
+                        
+                        <Plot
+                        data={this.state.data}
+                        layout={this.state.layout}
+                        onInitialized={() => { this.getData(); } } />
                     </div>
                 </div></>  
 
