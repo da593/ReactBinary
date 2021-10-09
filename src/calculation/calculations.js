@@ -4,6 +4,7 @@
 
 //Calls the various functions required to calculate and generate the McCabe-Thiele Graph
 
+
 import {equilibriumCurve,x_eq} from "./equilibriumCalc";
 import {createLines,jsonDataFormat,addDataArray,resetData} from "./util";
 var numStages = 0;
@@ -12,7 +13,10 @@ var minReflux = 0;
 export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
     resetValues()
     resetData()
-    
+    console.log(!checkInput(z,yD,xB,q,refluxRatio,alpha))
+    if ( !checkInput(z,yD,xB,q,refluxRatio,alpha)) {
+      return ["Input Error","Input Error","Input Error"]
+    }
     var minPoint= calculateMinPoint(q,alpha,z)
     var minInt = stripLine(0,yD,minPoint[0],minPoint[1])
     minReflux = calculateMinimumRefluxRatio(minInt,yD)
@@ -202,3 +206,11 @@ function resetValues() {
   feedStage = 0;
 }
 
+function checkInput(z,yD,xB,q,refluxRatio,alpha) {
+  if (isNaN(z) || isNaN(yD)  || isNaN(xB)  || isNaN(q)  || isNaN(refluxRatio)  || isNaN(alpha)  ) {
+    return false
+  }
+  else {
+    return true
+  }
+}

@@ -94,9 +94,10 @@ export function renderChart(dataArray) {
             font: {
               family:  "Helvetica,Arial,sans-serif",
               size: 18,
-              color: '#030303'
-            }
+              color: '#030303',
+            },
           },
+
         },
         yaxis: {
           title: {
@@ -104,11 +105,16 @@ export function renderChart(dataArray) {
             font: {
               family: "Helvetica,Arial,sans-serif",
               size: 18,
-              color: '#030303'
-            }
-          }
+              color: '#030303',
+            },
+          },
+          linecolor: 'black',
+          linewidth: 1,
+          mirror: true
         },
-        paper_bgcolor:'#f0f0f7',      
+        paper_bgcolor:'#fff',
+        borderwidth:"1px",
+        bordercolor:"rgb(0,0,0)",      
       }  
       
     return [dataArray,layout]

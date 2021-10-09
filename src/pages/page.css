@@ -1,9 +1,13 @@
 
-h1,h2 {
+h1,h2,h4 {
     text-align:center;
     text-decoration:underline;
     text-decoration-thickness:2px;
     width:100%;
+}
+
+h2 {
+    padding-top:8%;
 }
 
 
@@ -19,14 +23,27 @@ p,.description {
     margin-bottom:3%;
 }
 
+#content-container {
+    background-color: #f0f0f7;
+    padding-top:1%;
+    padding-bottom:1%;
+}
+
+
 
 .form-group {
     text-align:center;
+    background-color:#fff;
+
 }
 
 form {
     width:100%;
 
+}
+
+label {
+    font-weight:700;
 }
 
 button {	
@@ -43,4 +60,19 @@ button {
 .answerLabel{
     color:#140fa8;
     font-weight:bold;
+   
 }
+
+
+
+.validity-container {
+    width: 100%;
+    align-content:center;
+}
+.validity {
+    
+    color:red;
+    margin-left:25px;
+    width:100%;
+}
+

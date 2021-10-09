@@ -12,22 +12,21 @@ class Solver extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          z: 0.5,
-          yD: 0.9,
-          xB: 0.1,
-          q: 1.1,
-          reflux: 1.5,
-          alpha: 2.45,
+          z: "0.5",
+          yD: "0.9",
+          xB: "0.1",
+          q: "1.1",
+          reflux: "1.5",
+          alpha: "2.45",
           data: [], 
           layout: {},
           stages:0,
           feedStage:0,
           minReflux:0,
         };
-
+        this.validateNumber = this.validateNumber.bind(this);
         this.validateDecimal = this.validateDecimal.bind(this);
         this.validateRatio = this.validateRatio.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
       }
 
       zToolTip = (props) => (
@@ -65,33 +64,52 @@ class Solver extends Component {
         Enter the relative volatility between the two components which compares vapor pressure of the components. Enter a value greater than 0 (e.g. 2.5)
         </Tooltip>
       );
-    
+
+      validateNumber(event) {
+        const re = /^-?\d*\.?\d*$/
+        let {value,name} = event.target;
+
+        if ( re.test(value)) {
+            this.setState({
+                [name]: value
+              }, () => {
+                this.getData()
+              });
+            }  
+        }
 
       validateDecimal(event) {
-        
+        const re= /^(?:0*(?:\.\d*)?|1(\.0*)?)$/
         let {value,name} = event.target;
-        
-        
-        this.setState({
-            [name]: value
-          });
-      }
+
+        if ( re.test(value)) {
+            this.setState({
+                [name]: value
+              }, () => {
+                this.getData()
+              });
+            }
+        }
+
+      
 
       validateRatio(event) {
+        const re = /^\d*\.?\d*$/
         let {value,name} = event.target;
-        
-        this.setState({
-            [name]: value
-          });
-      }
 
-      handleSubmit(event) {
-        this.getData()
-        
-        event.preventDefault();
-      }
+        if ( re.test(value)) {
+            this.setState({
+                [name]: value
+              }, () => {
+                this.getData()
+              });
+            }
+        }
+
+
 
       getData() {
+          console.log(this.state.reflux)
           let stage = calculationSequence(parseFloat(this.state.z),parseFloat(this.state.yD),parseFloat(this.state.xB),parseFloat(this.state.q),parseFloat(this.state.reflux),parseFloat(this.state.alpha))
           let data = renderChart(getDataArray())
         
@@ -104,21 +122,25 @@ class Solver extends Component {
           })
       }
 
+      checkEmptyInput() {
+
+      }
+
     render() {
         return (
             <><div className="header">
                 <h1>McCabe-Thiele Diagram</h1>
                 <p className="description">Calculates total number of stages, feed stage, and minimum reflux for a distillation column to separate a binary mixture with a given Relative Volatility.</p>
             </div>
-            <div className="row">
-                    <div className="col-5">
-                        <form onSubmit={this.handleSubmit}>
-
-                            <h2> Input </h2>
-                            <div className="form-group row">
-                                <div className="col-sm-10">
-
-                                    <label id="z" className="col-sm-4 col-form-label">
+            <div className="row" id="content-container">
+                    <div className="col-sm-2"></div>
+                    <div className="col-md-4" id="input-container">
+                        <form>
+                        <h2> Input </h2>
+                            <div className="form-group">
+                                <div>
+                                   
+                                    <label id="z">
                                         <OverlayTrigger placement="top" overlay={this.zToolTip}>
                                             <div className="icon-div">
                                                 <BsInfoCircleFill />
@@ -126,14 +148,18 @@ class Solver extends Component {
                                         </OverlayTrigger>
                                         &nbsp; Feed Composition (z)
                                     </label>
-
+                                </div>
+                                <div>
                                     <input
                                         type="text"
                                         name="z"
                                         value={this.state.z}
-                                        pattern="[0-9]*[.]?[0-9]+"
                                         onChange={this.validateDecimal} />
+                                    <div className="validity-container">
+                                        <span className="validity">&nbsp; Enter a value between 0-1 (e.g. 0.45)</span>
+                                    </div>
                                 </div>
+                                
                             </div>
 
 
@@ -151,8 +177,10 @@ class Solver extends Component {
                                         type="text"
                                         name="yD"
                                         value={this.state.yD}
-                                        pattern="[0-9]*[.]?[0-9]+"
                                         onChange={this.validateDecimal} />
+                                    <div className="validity-container">
+                                        <span className="validity">&nbsp; Enter a value between 0-1 (e.g. 0.95)</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -170,8 +198,10 @@ class Solver extends Component {
                                         type="text"
                                         name="xB"
                                         value={this.state.xB}
-                                        pattern="[0-9]*[.]?[0-9]+"
                                         onChange={this.validateDecimal} />
+                                    <div className="validity-container">
+                                        <span className="validity">&nbsp; Enter a value between 0-1 (e.g. 0.05)</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -189,8 +219,11 @@ class Solver extends Component {
                                         type="text"
                                         name="q"
                                         value={this.state.q}
-                                        pattern="[-]?[0-9]*[.]?[0-9]+"
                                         onChange={this.validateNumber} />
+                                    <div className="validity-container">
+                                        <span className="validity">&nbsp; Enter a value for q (e.g. -1.2)</span>
+                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -208,9 +241,13 @@ class Solver extends Component {
                                         type="text"
                                         name="reflux"
                                         value={this.state.reflux}
-                                        pattern="[0-9]*[.]?[0-9]+"
                                         onChange={this.validateRatio} />
+                                    <div className="validity-container">
+                                        <span className="validity">&nbsp; Enter a value greater than 0 (e.g. 2.5) </span>
+                                    </div>
+                                   
                                 </div>
+   
                             </div>
 
                             <div className="form-group row">
@@ -227,19 +264,16 @@ class Solver extends Component {
                                         type="text"
                                         name="alpha"
                                         value={this.state.alpha}
-                                        pattern="[0-9]*[.]?[0-9]+"
                                         onChange={this.validateRatio} />
+                                    <div className="validity-container">
+                                        <span className="validity">&nbsp; Enter a value greater than 0 (e.g. 1.45)</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="row justify-content-center mt-5">
-                                <div className="col-sm-1">
-                                    <button className="btn btn-dark" type="button" onClick={this.handleSubmit}>Solve</button>
-                                </div>
-                            </div>
                         </form>
                     </div>
-                    <div className="col">   
+                    <div className="col-md-4">   
                         <br/>
                         <label className="answerLabel"> Number of Stages: {this.state.stages} </label>
                         <br />
