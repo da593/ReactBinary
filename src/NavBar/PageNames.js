@@ -1,12 +1,12 @@
 export const PageNames = [
     {
         title:"Solver",
-        url:'https://da593.github.io/ReactBinary/',
+        url:'/ReactBinary/',
         cName:'nav-links',
     },
     {
         title:"About",
-        url:'https://da593.github.io/ReactBinary/about',
+        url:'/ReactBinary/about',
         cName:'nav-links',
     },
 
