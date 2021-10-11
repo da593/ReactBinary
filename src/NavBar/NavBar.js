@@ -14,7 +14,7 @@ class NavBar extends Component {
                         {PageNames.map((item,index)=> {
                             return (
                                 <li key={index}>
-                                    <a className={item.cName} href={item.url}>
+                                    <a className={item.cName} href="#">
                                         {item.title}
                                     </a>
                                 </li>
