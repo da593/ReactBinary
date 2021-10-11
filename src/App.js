@@ -21,8 +21,8 @@ function App() {
       <Router basename="/ReactBinary">
         <NavBar/>
           <Switch>
-            <Route path="/solver" component = {solver} />
-            <Route path="/about" component = {about} />
+            <Route path="/" component = {solver} />
+            <Route path="/" component = {about} />
           </Switch>
       </Router>
       <Footer/>
