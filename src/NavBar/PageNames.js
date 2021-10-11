@@ -6,7 +6,7 @@ export const PageNames = [
     },
     {
         title:"About",
-        url:'/ReactBinary/about',
+        url:'/ReactBinary/about/',
         cName:'nav-links',
     },
 
