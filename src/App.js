@@ -22,7 +22,7 @@ function App() {
         <NavBar/>
           <Switch>
             <Route path="/" component = {solver} />
-            <Route path="/" component = {about} />
+            <Route path="/about" component = {about} />
           </Switch>
       </Router>
       <Footer/>
