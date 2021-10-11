@@ -18,11 +18,11 @@ function App() {
    
     <div className="App">
       
-      <Router basename="/ReactBinary">
+      <Router>
         <NavBar/>
           <Switch>
-            <Route path="/" component = {solver} />
-            <Route path="/about" component = {about} />
+            <Route exact path="/ReactBinary/" component = {solver} />
+            <Route exact path="/ReactBinary/about" component = {about} />
           </Switch>
       </Router>
       <Footer/>
