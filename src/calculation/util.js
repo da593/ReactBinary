@@ -89,6 +89,7 @@ export function renderChart(dataArray) {
       title:"<b>McCabe-Thiele Y-X Diagram </b>",
       autosize:true,
       xaxis: {
+          range: [0,1],
           title: {
             text: 'x',
             font: {
@@ -97,9 +98,12 @@ export function renderChart(dataArray) {
               color: '#030303',
             },
           },
-
+          linecolor: 'black',
+          linewidth: 1,
+          mirror: true,
         },
         yaxis: {
+          range: [0,1],
           title: {
             text: 'y',
             font: {
@@ -110,11 +114,13 @@ export function renderChart(dataArray) {
           },
           linecolor: 'black',
           linewidth: 1,
-          mirror: true
+          mirror: true,
         },
         paper_bgcolor:'#fff',
         borderwidth:"1px",
-        bordercolor:"rgb(0,0,0)",      
+        bordercolor:"rgb(0,0,0)", 
+        width: 800,
+        height: 500,     
       }  
       
     return [dataArray,layout]

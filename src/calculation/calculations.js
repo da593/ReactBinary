@@ -13,15 +13,19 @@ var minReflux = 0;
 export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
     resetValues()
     resetData()
-    console.log(!checkInput(z,yD,xB,q,refluxRatio,alpha))
     if ( !checkInput(z,yD,xB,q,refluxRatio,alpha)) {
       return ["Input Error","Input Error","Input Error"]
     }
+
     var minPoint= calculateMinPoint(q,alpha,z)
+    if (minPoint === "Error") {
+     
+      return ["Input Error","Input Error","Input Error"]
+    }
     var minInt = stripLine(0,yD,minPoint[0],minPoint[1])
     minReflux = calculateMinimumRefluxRatio(minInt,yD)
-    if (minReflux === "Error" || refluxRatio < minReflux) {
-      return ["N/A","N/A","Given reflux ratio < Minimum reflux ratio required"]
+    if (refluxRatio < minReflux) {
+      return ["N/A","N/A","Check Input!!! Given reflux < Minimum reflux!!!"]
     }
     else {
       var intersectionPoint = calcIntersectionPoint(z,yD,q,refluxRatio);
@@ -37,8 +41,12 @@ export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
       
       var equilibriumValues = equilibriumCurve(alpha);
       
+      if (equilibriumValues === "Error") {
+        return ["Input Error","Input Error","Input Error"] 
+      }
+      
       var diagonalLineValues = diagonalLine()
-  
+      
       var feedLineData = jsonDataFormat(feedLine[0],feedLine[1],"Feed Line","rgb(10,97,247)");
       var strippingLineData = jsonDataFormat(strippingLine[0],strippingLine[1],"Stripping Line","rgb(211,69,233)");
       var rectifyingLineData = jsonDataFormat(rectifyingLine[0],rectifyingLine[1],"Rectifying Line","rgb(55,220,72)");
@@ -48,7 +56,11 @@ export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
       var feedCompData = jsonDataFormat(feedComp[0],feedComp[1],"","rgb(240,136,44)");
       var distlCompData = jsonDataFormat(distlComp[0],distlComp[1],"","rgb(240,136,44)");
       var minLineData = jsonDataFormat(minLine[0],minLine[1],"Minimum Reflux","grey")
+      
       stepOff(xB,yD,intersectionPoint[0],intersectionPoint[1],refluxRatio,alpha);
+      if (numStages >= 100)  {
+        return [" Check Input!!! Number of Stages > 100!!!","N/A","N/A"]
+      }
       addDataArray(feedLineData);
       addDataArray(strippingLineData);
       addDataArray(rectifyingLineData);
@@ -59,7 +71,9 @@ export function calculationSequence(z,yD,xB,q,refluxRatio,alpha) {
       addDataArray(distlCompData);
       addDataArray(minLineData)
       
-      return [numStages.toFixed(0),feedStage.toFixed(0),minReflux.toFixed(2)]
+      return [numStages.toFixed(2),feedStage.toFixed(0),minReflux.toFixed(2)]
+      
+
 
     }
    
@@ -107,54 +121,67 @@ function stepOff(xB,yD,xI,yI,refluxRatio,alpha) {
   var xStep=yD;
   var yStep=yD;
   var xStripStep;
-  while (xStep>xI){
-    var xRectStop = x_eq(alpha,yStep);
-    var xRectLine = createLines(xStep,xRectStop,yStep,yStep);
-    var xRectData = jsonDataFormat(xRectLine[0],xRectLine[1],"staircasehide","rgb(0,0,0");
-    addDataArray(xRectData);
-    if (xRectStop<xI) {
-      xStripStep = xRectStop;
-
-      break;
+  
+    while (xStep>xI){
+      if (numStages > 100) {
+        break;
+      }
+      var xRectStop = x_eq(alpha,yStep);
+      var xRectLine = createLines(xStep,xRectStop,yStep,yStep);
+      var xRectData = jsonDataFormat(xRectLine[0],xRectLine[1],"staircasehide","rgb(0,0,0");
+      addDataArray(xRectData);
+      if (xRectStop<xI) {
+        xStripStep = xRectStop;
+  
+        break;
+      }
+      
+      var yRectStop = recLine(xRectStop,yD,refluxRatio);
+      var yRectLine = createLines(xRectStop,xRectStop,yStep,yRectStop);
+      var yRectData = jsonDataFormat(yRectLine[0],yRectLine[1],"staircasehide","rgb(0,0,0");
+      addDataArray(yRectData);
+      xStep = xRectStop;
+      yStep = yRectStop;
+      
+      numStages++;
+      
     }
-    
-    var yRectStop = recLine(xRectStop,yD,refluxRatio);
-    var yRectLine = createLines(xRectStop,xRectStop,yStep,yRectStop);
-    var yRectData = jsonDataFormat(yRectLine[0],yRectLine[1],"staircasehide","rgb(0,0,0");
-    addDataArray(yRectData);
-    xStep = xRectStop;
-    yStep = yRectStop;
-    
-    numStages++;
-   
-  }
-   
-  // Stripping section
-  feedStage = numStages + 1;
-  while (xStripStep>xB) {
-    var yStripStop = stripLine(xStripStep,xB,xI,yI);
-    var yStripLine = createLines(xStripStep,xStripStep,yStep,yStripStop);
-    var yStripData = jsonDataFormat(yStripLine[0],yStripLine[1],"staircasehide","rgb(0,0,0");
-    addDataArray(yStripData);
-
-    var xStripStop = x_eq(alpha,yStripStop);
-    var xStripLine = createLines(xStripStep,xStripStop,yStripStop,yStripStop);
-    var xStripData = jsonDataFormat(xStripLine[0],xStripLine[1],"staircasehide","rgb(0,0,0)")
-    addDataArray(xStripData);
-
-    xStripStep = xStripStop;
-    yStep = yStripStop;
-    numStages++;
-
-    if (xStripStep<xB) {
-      yStripStop = xStripStep
-      yStripLine = createLines(xStripStep,xStripStep,yStep,yStripStop);
-      yStripData = jsonDataFormat(yStripLine[0],yStripLine[1],"staircase","rgb(0,0,0");
+     
+    // Stripping section
+    feedStage = numStages + 1;
+    while (xStripStep>xB) {
+      if (numStages > 100) {
+        break;
+      }
+      var yStripStop = stripLine(xStripStep,xB,xI,yI);
+      var yStripLine = createLines(xStripStep,xStripStep,yStep,yStripStop);
+      var yStripData = jsonDataFormat(yStripLine[0],yStripLine[1],"staircasehide","rgb(0,0,0");
       addDataArray(yStripData);
-      break;
+  
+      var xStripStop = x_eq(alpha,yStripStop);
+      var xStripLine = createLines(xStripStep,xStripStop,yStripStop,yStripStop);
+      var xStripData = jsonDataFormat(xStripLine[0],xStripLine[1],"staircasehide","rgb(0,0,0)")
+      addDataArray(xStripData);
+  
+      xStripStep = xStripStop;
+      yStep = yStripStop;
+      numStages++;
+  
+      if (xStripStep<xB) {
+        yStripStop = xStripStep
+        yStripLine = createLines(xStripStep,xStripStep,yStep,yStripStop);
+        yStripData = jsonDataFormat(yStripLine[0],yStripLine[1],"staircase","rgb(0,0,0");
+        addDataArray(yStripData);
+        break;
+      }
+    }
+    if (typeof(xStripData) != "undefined" && typeof(yStripData) != "undefined") {
+      var fractionStage = (xStripData.x[0] - xB) / (xStripData.x[0] - yStripData.x[1])
+      numStages = numStages + fractionStage
     }
 
-  }
+
+    
 }
 
 function calculateMinPoint(q,alpha,z) {
@@ -164,6 +191,7 @@ function calculateMinPoint(q,alpha,z) {
   var discriminant = b*b - 4 * a * c
   
   var root1, root2;
+
   var x1 
   if (a === 0) {
     return "Error"
@@ -178,7 +206,7 @@ function calculateMinPoint(q,alpha,z) {
     if ( root1 > 1 && root2 > 1) {
      return "Error"
     }
-    else if (root1 > 0 && root1 < 1) {
+    else if (root1 > 0 || root1 < 1) {
       x1 = root1
     }
     else {
@@ -190,7 +218,7 @@ function calculateMinPoint(q,alpha,z) {
     x1 = root1
   }
 
-  var y1 = alpha*x1 / (1+x1*(alpha-1))
+  var y1 = alpha*x1 / (1+x1*(alpha-1) )
   
   return [x1,y1]
     
@@ -207,6 +235,7 @@ function resetValues() {
 }
 
 function checkInput(z,yD,xB,q,refluxRatio,alpha) {
+
   if (isNaN(z) || isNaN(yD)  || isNaN(xB)  || isNaN(q)  || isNaN(refluxRatio)  || isNaN(alpha)  ) {
     return false
   }

@@ -10,9 +10,16 @@ export function equilibriumCurve(alpha) {
     var xVal= 0;
     for (let i=0;i < 100;i++) {
         xVal = xVal + step;
+        var denominator = (1+(alpha-1)*xVal)
+       
+        if ( denominator <= 0) {
+           
+            return "Error"
+        }
         x.push(xVal);
-        y.push(alpha*xVal/(1+(alpha-1)*xVal));
+        y.push(alpha*xVal/denominator);
     }
+   
     return [x,y];
 }
 

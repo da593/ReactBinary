@@ -13,13 +13,11 @@ const About = () => {
             <div className="col">
                 <p id="descript">
                     This solver uses the McCabe-Thiele graphical method to determine the number of stages a binary distillation needs in order to achieve the desired distillate composition.
-                    The solver also determines the optimal feed stage and minimum reflux ratio. 
-                    This solver assumes constant molal in order to simplify the problem. 
+                    The solver also determines the optimal feed stage and minimum reflux ratio.
+                    This solver assumes constant molal in order to simplify the problem.
                     Feel free to use this solver to save yourself time on homework problems in which it requires this graphically iterative process.
                 </p>
             </div>
-
-
         </div></>
     )
 }
