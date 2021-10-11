@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/ReactBinary/static/css/main.9010a2a8.chunk.css",
+    "main.js": "/ReactBinary/static/js/main.a5df9d62.chunk.js",
+    "main.js.map": "/ReactBinary/static/js/main.a5df9d62.chunk.js.map",
+    "runtime-main.js": "/ReactBinary/static/js/runtime-main.0a45c83c.js",
+    "runtime-main.js.map": "/ReactBinary/static/js/runtime-main.0a45c83c.js.map",
+    "static/css/2.f2512455.chunk.css": "/ReactBinary/static/css/2.f2512455.chunk.css",
+    "static/js/2.f0003b7d.chunk.js": "/ReactBinary/static/js/2.f0003b7d.chunk.js",
+    "static/js/2.f0003b7d.chunk.js.map": "/ReactBinary/static/js/2.f0003b7d.chunk.js.map",
+    "index.html": "/ReactBinary/index.html",
+    "static/css/2.f2512455.chunk.css.map": "/ReactBinary/static/css/2.f2512455.chunk.css.map",
+    "static/css/main.9010a2a8.chunk.css.map": "/ReactBinary/static/css/main.9010a2a8.chunk.css.map",
+    "static/js/2.f0003b7d.chunk.js.LICENSE.txt": "/ReactBinary/static/js/2.f0003b7d.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0a45c83c.js",
+    "static/css/2.f2512455.chunk.css",
+    "static/js/2.f0003b7d.chunk.js",
+    "static/css/main.9010a2a8.chunk.css",
+    "static/js/main.a5df9d62.chunk.js"
+  ]
+}
