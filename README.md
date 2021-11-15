@@ -10,6 +10,6 @@ https://da593.github.io/ReactBinary/
 
 # Setup
 1. Clone the repository
-2. Change to root directory (./personalWesbite)
+2. Change to root directory (./ReactBinary)
 3. npm install
 4. npm start
